@@ -85,7 +85,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/src
           chmod +x gradlew
-          ./gradlew make makePluginsJson --no-daemon --stacktrace
+          ./gradlew make makePluginsJson --no-daemon --stacktrace --info --refresh-dependencies
           cp -r **/build/*.cs3 $GITHUB_WORKSPACE/builds/ || true
           cp build/plugins.json $GITHUB_WORKSPACE/builds/plugins.json || true
           cp build/repo.json $GITHUB_WORKSPACE/builds/repo.json || true

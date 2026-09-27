@@ -7,14 +7,14 @@ buildscript {
         google()
         mavenCentral()
         gradlePluginPortal()
-        maven("https://jitpack.io")
+        maven { url = uri("https://jitpack.io") }
     }
 
     dependencies {
-        // Upgraded to AGP 8.2.2 which is 100% native to Java 17
         classpath("com.android.tools.build:gradle:8.2.2")
-        classpath("com.github.recloudstream:gradle:master-SNAPSHOT")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
+        // Pinned to stable commit instead of volatile master-SNAPSHOT
+        classpath("com.github.recloudstream:gradle:d8e78848d2")
     }
 }
 
@@ -22,7 +22,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven("https://jitpack.io")
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
