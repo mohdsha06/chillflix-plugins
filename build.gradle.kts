@@ -6,12 +6,14 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
         maven("https://jitpack.io")
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.4")
-        classpath("com.github.recloudstream:gradle:-SNAPSHOT")
+        // Upgraded to AGP 8.2.2 which is 100% native to Java 17
+        classpath("com.android.tools.build:gradle:8.2.2")
+        classpath("com.github.recloudstream:gradle:master-SNAPSHOT")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
     }
 }
@@ -36,30 +38,32 @@ subprojects {
     apply(plugin = "com.lagradost.cloudstream3.gradle")
 
     cloudstream {
-        // Automatically picks up your repo or defaults to your GitHub raw url
         setRepo(System.getenv("GITHUB_REPOSITORY") ?: "mohdsha06/chillflix-plugins")
         authors = listOf("Chillflix")
     }
 
     android {
+        namespace = "com.chillflix.plugins.${project.name.lowercase()}"
         defaultConfig {
             minSdk = 21
-            compileSdkVersion(33)
-            targetSdk = 33
+            compileSdkVersion(34)
+            targetSdk = 34
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
 
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "17"
                 freeCompilerArgs = freeCompilerArgs +
-                        "-Xno-call-assertions" +
-                        "-Xno-param-assertions" +
-                        "-Xno-receiver-assertions"
+                        listOf(
+                            "-Xno-call-assertions",
+                            "-Xno-param-assertions",
+                            "-Xno-receiver-assertions"
+                        )
             }
         }
     }
@@ -68,7 +72,6 @@ subprojects {
         val apk by configurations
         val implementation by configurations
 
-        // Stubs for Cloudstream classes
         apk("com.lagradost:cloudstream3:pre-release")
 
         implementation(kotlin("stdlib"))
